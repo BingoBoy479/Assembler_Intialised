@@ -111,7 +111,7 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                             return 'Illegal use of flag register'
                         if b[1] not in register_list or b[2] not in register_list:
                             return 'Typo in register name'
-                     except:
+                    except:
                         return 'General Syntax error'
                 if c not in opcode:
                     return 'Typo in command name'
