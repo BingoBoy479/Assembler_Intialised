@@ -58,11 +58,14 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                         return 'Typo in register name'
                 #error checker for A Type instructions 
                 type_A_instructions=['add','sub','mul','xor','or','and']
-                if c in type_A_instructions:
-                    if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
-                        return 'Illegal use of flag register'
-                    if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
-                        return 'Typo in register name'
+                if len(b)==4:
+                    if c in type_A_instructions:
+                        if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
+                            return 'Illegal use of flag register'
+                        if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
+                            return 'Typo in register name'
+                else:
+                    return 'general syntax error'
                 #special error checker for mov reg1 reg2
                 if '$' not in b[-1] and c=='mov':
                     if b[1]=='R7'or b[1]=='FLAGS':
@@ -106,23 +109,29 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                     return 'Typo in command name'
     #error checker for Immediate value type instructions or B Type instructions 
     if '$' in b[-1]:
-        imm=int(b[-1][1:])
-        okay=['rs','ls','mov']
-        if imm>127:
-            return 'Illegal value of immediate'
-        if c not in okay:
-            return 'Illegal use of command'
-        if b[1] == 'R7' or b[1]=='FLAGS':
-            return 'Illegal use of flag register'
-        if b[1] not in register_list:
-            return 'Typo in register name'
+        try:
+            imm=int(b[-1][1:])
+            okay=['rs','ls','mov']
+            if imm>127:
+                return 'Illegal value of immediate'
+            if c not in okay:
+                return 'Illegal use of command'
+            if b[1] == 'R7' or b[1]=='FLAGS':
+                return 'Illegal use of flag register'
+            if b[1] not in register_list:
+                return 'Typo in register name'
+        except:
+            return 'genral syntax error'
     #error checker for A Type instructions 
     type_A_instructions=['add','sub','mul','xor','or','and']
-    if c in type_A_instructions:
-        if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
-            return 'Illegal use of flag register'
-        if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
-            return 'Typo in register name'
+    if len(b)==4:
+        if c in type_A_instructions:
+            if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
+                return 'Illegal use of flag register'
+            if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
+                return 'Typo in register name'
+    else:
+        return ' genral syntax error'
     #special error checker for mov reg1 reg2
     if '$' not in b[-1] and c=='mov':
         if b[1]=='R7'or b[1]=='FLAGS':
