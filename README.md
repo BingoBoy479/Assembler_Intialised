@@ -1,6 +1,5 @@
 # Assembler_Intialised
-CO Project  group:B-40 institue -IIIT-D yr-2023 
-nice to meet you 
+CO Project  group:B-40 institue -IIIT-D yr-2023:
 The provided code seems to be an implementation of an assembler for a specific architecture or instruction set. It reads an assembly code file, performs various checks on the code for syntax errors and semantic correctness, and generates binary machine code as output.
 
 The file_reader function reads the contents of a file and returns them as a list of lines.
