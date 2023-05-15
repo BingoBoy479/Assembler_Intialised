@@ -46,16 +46,19 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                     return 'Typo in command name'
                 #error checker for Immediate value type instructions or B Type instructions 
                 if '$' in b[-1]:
-                    imm=int(b[-1][1:])
-                    okay=['rs','ls','mov']
-                    if imm>127:
-                        return 'Illegal value of immediate'
-                    if c not in okay:
-                        return 'Illegal use of command'
-                    if b[1] == 'R7' or b[1]=='FLAGS':
-                        return 'Illegal use of flag register'
-                    if b[1] not in register_list:
-                        return 'Typo in register name'
+                    try:
+                        imm=int(b[-1][1:])
+                        okay=['rs','ls','mov']
+                        if imm>127:
+                            return 'Illegal value of immediate'
+                        if c not in okay:
+                            return 'Illegal use of command'
+                        if b[1] == 'R7' or b[1]=='FLAGS':
+                            return 'Illegal use of flag register'
+                        if b[1] not in register_list:
+                            return 'Typo in register name'
+                    except:
+                        return 'General syntax error'
                 #error checker for A Type instructions 
                 type_A_instructions=['add','sub','mul','xor','or','and']
                 if len(b)==4:
@@ -68,12 +71,15 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                     return 'general syntax error'
                 #special error checker for mov reg1 reg2
                 if '$' not in b[-1] and c=='mov':
-                    if b[1]=='R7'or b[1]=='FLAGS':
-                        return 'Illegal use of flag register'
-                    if b[1] not in register_list:
-                        return 'Typo in register name'
-                    if b[2]!='FLAGS' and b[2] not in register_list:
-                        return 'Typo in register name'
+                    if len(b)==3:
+                        if b[1]=='R7'or b[1]=='FLAGS':
+                            return 'Illegal use of flag register'
+                        if b[1] not in register_list:
+                            return 'Typo in register name'
+                        if b[2]!='FLAGS' and b[2] not in register_list:
+                            return 'Typo in register name'
+                    else:
+                        return 'General syntax error'
                 #to check for illegal labels aka error checker for E type Instructions
                 jump=['jmp','jlt','jgt','je']
                 if c in jump:
@@ -96,15 +102,17 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                     if b[1]in fla1 and c!='st':
                         return 'Illegal use of flag refister'
                     if b[1] not in register_list and b[2] not in fla1 and b[2] not in var_list:
-                        print("llll")
                         return 'Typo in register name'
                 #error checker for C type instruction
                 type_X_instructions=['div','not','cmp']
                 if c in type_X_instructions:
-                    if b[1]=='R7'or b[2]=='R7':
-                        return 'Illegal use of flag register'
-                    if b[1] not in register_list or b[2] not in register_list:
-                        return 'Typo in register name'
+                    try:
+                        if b[1]=='R7'or b[2]=='R7':
+                            return 'Illegal use of flag register'
+                        if b[1] not in register_list or b[2] not in register_list:
+                            return 'Typo in register name'
+                     except:
+                        return 'General Syntax error'
                 if c not in opcode:
                     return 'Typo in command name'
     #error checker for Immediate value type instructions or B Type instructions 
@@ -134,12 +142,15 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
         return ' genral syntax error'
     #special error checker for mov reg1 reg2
     if '$' not in b[-1] and c=='mov':
-        if b[1]=='R7'or b[1]=='FLAGS':
-            return 'Illegal use of flag register'
-        if b[1] not in register_list :
-            return 'Typo in register name'
-        if b[2] not in register_list and b[2]!='FLAGS':
-            return 'Typo in register name'
+        try:
+            if b[1]=='R7'or b[1]=='FLAGS':
+                return 'Illegal use of flag register'
+            if b[1] not in register_list :
+                return 'Typo in register name'
+            if b[2] not in register_list and b[2]!='FLAGS':
+                return 'Typo in register name'
+        except:
+            return 'general syntax error'
     #to check for illegal labels aka error checker for E type Instructions
     jump=['jmp','jlt','jgt','je']
     if c in jump:
@@ -162,15 +173,17 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
         if b[1]in fla1 and c!='st':
             return 'Illegal use of flag refister'
         if b[1] not in register_list and b[2] not in fla1 and b[2] not in var_list:
-            print("llll")
             return 'Typo in register name'
     #error checker for C type instruction
     type_X_instructions=['div','not','cmp']
     if c in type_X_instructions:
-        if b[1]=='R7'or b[2]=='R7':
-            return 'Illegal use of flag register'
-        if b[1] not in register_list or b[2] not in register_list:
-            return 'Typo in register name'
+        try:
+            if b[1]=='R7'or b[2]=='R7':
+                return 'Illegal use of flag register'
+            if b[1] not in register_list or b[2] not in register_list:
+                return 'Typo in register name'
+        except:
+            return 'general syntax error'
 
 def binary_gen(line,dec_dict,data_memory,reg_dict,opco_dict):
     b=line.split(" ")
