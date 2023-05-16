@@ -1,33 +1,4 @@
-def file_reader(file_name):
-    with open(file_name, 'r') as file:
-        content = file.readlines()
-    return content
-def program_data_mem_allocator(lines):
-    prog_mem = {}
-    data_mem = {}
-    variables = []
-    var_values = []  
-    line_count = 0
-    for line in lines:
-        line = line.strip()
-        if '\t' in line:
-            line = line.replace('\t', ' ')
-        if line == "":
-            continue
-        if line and line.startswith('var'):
-            parts = line.split(' ')
-            var_name = parts[1]
-            var_value = int(parts[2]) if len(parts) > 2 else 0
-
-            variables.append(var_name)
-            var_values.append(var_value)  
-        else:
-            prog_mem[format(line_count, '08b')[-7:]] = line
-            line_count += 1
-    a = len(list(prog_mem.keys()))  
-    for i in range(len(variables)):
-        data_mem[variables[i]] = [format(a + i, '08b')[-7:], var_values[i]]  
-    return prog_mem, data_mem
+import re
 def linechecker(line,label_dict,called,data_memory,register_list,opcode):
     b=line.split(" ")
     c=b[0]
@@ -61,14 +32,15 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
                         return 'General syntax error'
                 #error checker for A Type instructions 
                 type_A_instructions=['add','sub','mul','xor','or','and']
-                if len(b)==4:
-                    if c in type_A_instructions:
-                        if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
-                            return 'Illegal use of flag register'
-                        if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
-                            return 'Typo in register name'
-                else:
-                    return 'general syntax error'
+                if c in type_A_instructions:    
+                    if len(b)==4:
+                        if c in type_A_instructions:
+                            if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
+                                return 'Illegal use of flag register'
+                            if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
+                                return 'Typo in register name'
+                    else:
+                        return 'general syntax error'
                 #special error checker for mov reg1 reg2
                 if '$' not in b[-1] and c=='mov':
                     if len(b)==3:
@@ -132,14 +104,15 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
             return 'genral syntax error'
     #error checker for A Type instructions 
     type_A_instructions=['add','sub','mul','xor','or','and']
-    if len(b)==4:
-        if c in type_A_instructions:
-            if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
-                return 'Illegal use of flag register'
-            if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
-                return 'Typo in register name'
-    else:
-        return ' genral syntax error'
+    if c in type_A_instructions:    
+        if len(b)==4:
+            if c in type_A_instructions:
+                if b[1]=='R7' or b[2]=='R7' or b[3]=='R7' or b[1]=='FLAGS' or b[2]=='FLAGS' or b[3]=='FLAGS':
+                    return 'Illegal use of flag register'
+                if b[1] not in register_list or b[2] not in register_list or b[3] not in register_list:
+                    return 'Typo in register name'
+        else:
+            return ' genral syntax error'
     #special error checker for mov reg1 reg2
     if '$' not in b[-1] and c=='mov':
         try:
@@ -160,12 +133,13 @@ def linechecker(line,label_dict,called,data_memory,register_list,opcode):
             if i not in declared_label:
                 return 'Illegal use of label'
     #error checker for D type instructions
-    var_list=list(data_memory.keys())
+    var_list1=list(data_memory.keys())
+    #print(var_list1)
     fla1=['FLAGS','R7']
     if c=='ld' or c=='st':
-        if b[-1] not in var_list:
+        if b[-1] not in var_list1:
             return 'Variable not declared'
-        if b[-1] in var_list:
+        if b[-1] in var_list1:
             if b[1] in fla1 and c!="st":
                 return 'Illegal use of flag register'
             if b[1] not in register_list and b[1] not in fla1:
@@ -239,8 +213,54 @@ def binary_gen(line,dec_dict,data_memory,reg_dict,opco_dict):
     Type_F=['hlt']
     if c in Type_F:
         return opco_dict[c]+format(0,'011b')
-lines=file_reader("assembly_code(1).txt")    
-programme_memory,data_memory = program_data_mem_allocator(lines)
+#input taker
+test=[]
+testline="."
+programme_memory={}
+while True:
+    try:
+        testline=input()
+        if '\t' in testline:
+            testline=testline.replace('\t',' ')
+            if testline[0]==' ':
+                testline=testline.strip(' ')
+        test.append(testline)
+    except EOFError:
+        break
+#manual testing input taker
+# while(testline!=""):
+#         testline=input()
+#         if '\t' in testline:
+#             testline=testline.replace('\t',' ')
+#             if testline[0]==' ':
+#                 testline=testline.strip(' ')
+#         test.append(testline)
+if test[-1]=="":
+    test.pop(-1)
+var_list=[]
+var_dec=[]
+statement_dec=[]   
+for i in range(len(test)):
+    if 'var' in test[i]:
+        var_dec.append(test[i])
+    else:
+        statement_dec.append(test[i])
+for i in range(len(var_dec)):
+    b=var_dec[i]
+    b=b.replace('var',' ')
+    b=b.strip(' ')
+    var_list.append(b)
+for i in range(len(statement_dec)):
+    a=format(i,'08b')
+    a=a[1:]
+    statement_dec[i]=re.sub(r"\s+", " ",statement_dec[i])
+    programme_memory[a]=statement_dec[i]
+en=len(programme_memory)
+data_memory={}
+for i in range(len(var_list)):
+	a=format(en+i,'08b')
+	a=a[1:]
+	data_memory[var_list[i]]=[a,0]     
 declared_label_dict = {}
 for (i, j) in programme_memory.items():
     if ":" in j:
@@ -286,18 +306,15 @@ for i,j in programme_memory.items():
         error.append(i+":"+linechecker(programme_memory[i],declared_label_dict,called_label_list,data_memory,register_useable,opcode_list))
 if len(error)!=0:
     error=set(error)
-    with open("assembler_output.txt","w")as f:
-        error=list(error)
-        for i in range(len(error)):    
-            f.write(error[i])
-            f.write("\n")
+    error=list(error)
+    for i in range(len(error)):    
+        print(error[i])
+        print("\n")
     flag=""
 else:
     #flag to check if everything is correct
     flag="Friday hai"
 if flag=='Friday hai':
     #output writer
-    with open("assembler_output.txt","w")as f:
-        for j in programme_memory.values():
-            f.write(binary_gen(j,declared_label_dict,data_memory,register_dict,opcode_dict))
-            f.write("\n")
+    for j in programme_memory.values():
+        print(binary_gen(j,declared_label_dict,data_memory,register_dict,opcode_dict))
