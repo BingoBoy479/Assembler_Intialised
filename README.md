@@ -4,7 +4,7 @@ The provided code seems to be an implementation of an assembler for a specific a
 
 The file_reader function reads the contents of a file and returns them as a list of lines.
 
-The program_data_mem_allocator function takes the lines of the assembly code, processes them, and separates program memory and data memory instructions. It returns dictionaries prog_mem and data_mem, which store the instructions and their corresponding memory addresses.These two functions were made by Naitik(2022308)
+ THIS SECTION OF THE CODE WAS DELETED AS .TXT WAS NOT THE STANDARD FORM OF INPUT ~The program_data_mem_allocator function takes the lines of the assembly code, processes them, and separates program memory and data memory instructions. It returns dictionaries prog_mem and data_mem, which store the instructions and their corresponding memory addresses.These two functions were made by Naitik(2022308)~
 
 The linechecker function checks each line of the assembly code for syntax and semantic errors based on predefined rules. It returns an error message if any error is found.
 
