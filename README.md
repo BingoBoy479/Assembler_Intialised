@@ -1,12 +1,8 @@
 # Assembler_Intialised
 CO Project  group:B-40 institue -IIIT-D yr-2023:
 The provided code seems to be an implementation of an assembler for a specific architecture or instruction set. It reads an assembly code which is inputed in the terminal, performs various checks on the code for syntax errors and semantic correctness, and generates binary machine code as output in terminal.
-
- THIS SECTION OF THE CODE WAS DELETED AS .TXT WAS NOT THE STANDARD FORM OF INPUT 
  
- ~The program_data_mem_allocator function takes the lines of the assembly code, processes them, and separates program memory and data memory instructions. It returns dictionaries prog_mem and data_mem, which store the instructions and their corresponding memory addresses.~
- 
- These two functions were made by Naitik(2022308)
+ The program_data_mem_allocator function takes the lines of the assembly code, processes them, and separates program memory and data memory instructions. It returns dictionaries prog_mem and data_mem, which store the instructions and their corresponding memory addresses.These two functions were made by Naitik(2022308)
 
 The linechecker function checks each line of the assembly code for syntax and semantic errors based on predefined rules. It returns an error message if any error is found.
 
