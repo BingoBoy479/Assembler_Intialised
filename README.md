@@ -13,5 +13,7 @@ The binary_gen function generates the binary machine code for each line of the a
 The code then initializes dictionaries and lists for opcode mappings, register information, and label information. It iterates over the assembly code lines, checks for syntax and semantic errors using the linechecker function, and generates binary machine code using the binary_gen function. Finally, it prints the output to the terminal.This portion of the code was made by Shivankar Srijan Singh(2022479)
 
 Simulator:-
-The provided code reads the machine code outputed by the assembler and stores it in a list. It then categorizes the machine code into their associated action functions. Finally it executes the said action functions, it outputs the value of program counter after each instrunction followed by two tab spaces and values of all the register separated by space.
+The provided code reads the machine code outputed by the assembler and stores it in a list. It then categorizes the machine code into their associated action functions. 
+Finally it executes the said action functions, it outputs the value of program counter after each instrunction followed by two tab spaces and values of all the register separated by space.
+
 After reaching halt it dumps the entire memory of the ISA. This code was written by Shivankar Srijan Singh(2022479)
