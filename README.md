@@ -14,4 +14,4 @@ The code then initializes dictionaries and lists for opcode mappings, register i
 
 Simulator:-
 The provided code reads the machine code outputed by the assembler and stores it in a list. It then categorizes the machine code into their associated action functions. Finally it executes the said action functions, it outputs the value of program counter after each instrunction followed by two tab spaces and values of all the register separated by space.
-After reaching halt it dumps the entire memory of the ISA. 
+After reaching halt it dumps the entire memory of the ISA. This code was written by Shivankar Srijan Singh(2022479)
