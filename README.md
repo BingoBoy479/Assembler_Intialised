@@ -1,19 +1,43 @@
-# Assembler_Intialised
-CO Project  group:B-40 institue -IIIT-D yr-2023:
+# CO Project
+This is the github repository of our Computer Organisation project.
 
-Assembler:- 
-The provided code reads an assembly code which is inputed in the terminal, performs various checks on the code for syntax errors and semantic correctness, and generates binary machine code as output in terminal.
- 
- The program_data_mem_allocator function takes the lines of the assembly code, processes them, and separates program memory and data memory instructions. It returns dictionaries prog_mem and data_mem, which store the instructions and their corresponding memory addresses.These two functions were made by Naitik(2022308)
+## input.txt
+This file contains the input code.
 
-The linechecker function checks each line of the assembly code for syntax and semantic errors based on predefined rules. It returns an error message if any error is found.
+## machine_code.txt
+This file contains the output code.
 
-The binary_gen function generates the binary machine code for each line of the assembly code based on the opcode dictionary and other data structures.
+## assembler.py
+This is the main program and it contains the code for the assembler.
 
-The code then initializes dictionaries and lists for opcode mappings, register information, and label information. It iterates over the assembly code lines, checks for syntax and semantic errors using the linechecker function, and generates binary machine code using the binary_gen function. Finally, it prints the output to the terminal.This portion of the code was made by Shivankar Srijan Singh(2022479)
+Sections of code explained :-
 
-Simulator:-
-The provided code reads the machine code outputed by the assembler and stores it in a list. It then categorizes the machine code into their associated action functions. 
-Finally it executes the said action functions, it outputs the value of program counter after each instrunction followed by two tab spaces and values of all the register separated by space.
+**Defining Variables**: This section defines various variables used in the assembler. These variables keep track of the state of the assembler, such as the current instruction type, error flags, counters, and flags for different conditions. 
 
-After reaching halt it dumps the entire memory of the ISA. This code was written by Shivankar Srijan Singh(2022479)
+We define dictionaries to store the mappings between instructions and their binary representations.
+
+**Decimal to Binary Conversion**: The decimaltobinary function converts decimal values to binary with seven digits. It uses recursion.
+
+**Seven-bit Memory and Immediate Variables**: The seven_bit function is for checking if the binary representation exceeds seven bits. An overflow error is flagged in case it does.
+
+**Assembler main**: The assembler function is the main part of the program. It takes an instruction as input and processes it to generate the corresponding machine code.
+
+**Detecting the type of an instruction**: This checks the first word and the length of the instruction to determine the instruction type.It sets the appropriate variables and flags to handle the instruction later.
+
+**Reading var declaration in assembly**: defines variable declaration in assembly code by looking for "var" in the beginning of the string.The variables dictionary is updated accordingly.
+
+**Label definition**: label defining works by looking for ":" at the end of instruction. The labels dictionary is updated with the label's binary representation.
+
+**Converting Registers and Memory Addresses to Machine Code**: This section converts register names and memory addresses to corresponding binary representations. It also handles the FLAGS register and immediate values.
+
+**Storing Machine Code to Write in the File**: The machine code is stored in write_data(a list), which is later used to write the machine code into the output file.
+
+**Label handling**: This is done by giving each line a seven bit binary address counting up. The binary representation of the label is appended to the machine code of the instruction that requires the label.
+
+Variable address is a 7 bit number counting up for each variable.
+
+**Label Run**: After processing all instructions once, the label_run flag is set to true to indicate that the instructions are to be processed again taking labels into account.
+
+**Checking Halt Instruction**: For checking if the assembly code ends with 'halt'. If not, an error is flagged.
+
+**Writing the Machine Code to a File**: If no errors were encountered during the assembly process, the machine code is written to the output file. Otherwise, the first error encountered is written to the file.
